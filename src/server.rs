@@ -41,9 +41,9 @@ async fn handle_move<E: Engine>(
     let mutex = engine.clone();
     let engine = mutex.lock().await;
 
-    let next_move = engine.next(game_state);
+    let action = engine.next(game_state);
 
-    Json(json!({ "move": next_move }))
+    Json(json!({ "move": action }))
 }
 
 async fn handle_end<E: Engine>(

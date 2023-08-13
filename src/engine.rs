@@ -1,10 +1,10 @@
-use crate::{Direction, GameState};
+use crate::{Action, GameState};
 pub use dumb::Dumb;
 
 mod dumb;
 
 pub trait Engine: 'static + Clone + Sync + Send {
     fn start(&self, state: GameState);
-    fn next(&self, state: GameState) -> Direction;
+    fn next(&self, state: GameState) -> Action;
     fn end(&self, state: GameState);
 }

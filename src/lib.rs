@@ -49,7 +49,7 @@ pub struct Coord {
 
 #[derive(Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
-pub enum Direction {
+pub enum Action {
     Up,
     Down,
     Left,

@@ -1,5 +1,5 @@
 use super::Engine;
-use crate::{Direction, GameState};
+use crate::{Action, GameState};
 use rand::{self, Rng};
 
 #[derive(Clone)]
@@ -7,12 +7,12 @@ pub struct Dumb;
 
 impl Engine for Dumb {
     fn start(&self, _: GameState) {}
-    fn next(&self, _: GameState) -> Direction {
+    fn next(&self, _: GameState) -> Action {
         match rand::thread_rng().gen_range(0..=3) {
-            0 => Direction::Up,
-            1 => Direction::Down,
-            3 => Direction::Left,
-            2 => Direction::Right,
+            0 => Action::Up,
+            1 => Action::Down,
+            3 => Action::Left,
+            2 => Action::Right,
             _ => unreachable!(),
         }
     }

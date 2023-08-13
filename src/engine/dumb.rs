@@ -1,11 +1,11 @@
-use super::Engine;
+use super::SnakeEngine;
 use crate::{Action, GameState};
 use rand::{self, Rng};
 
 #[derive(Clone)]
 pub struct Dumb;
 
-impl Engine for Dumb {
+impl SnakeEngine for Dumb {
     fn start(&self, _: GameState) {}
     fn next(&self, _: GameState) -> Action {
         match rand::thread_rng().gen_range(0..=3) {

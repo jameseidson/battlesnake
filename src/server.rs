@@ -31,7 +31,7 @@ async fn handle_start<E: SnakeEngine + 'static + Send>(
     let mutex = engine.clone();
     let engine = mutex.lock().await;
 
-    engine.start(game_state);
+    engine.start(&game_state);
 }
 
 async fn handle_move<E: SnakeEngine + 'static + Send>(
@@ -41,7 +41,7 @@ async fn handle_move<E: SnakeEngine + 'static + Send>(
     let mutex = engine.clone();
     let engine = mutex.lock().await;
 
-    let action = engine.next(game_state);
+    let action = engine.next(&game_state);
 
     Json(json!({ "move": action }))
 }
@@ -53,5 +53,5 @@ async fn handle_end<E: SnakeEngine + 'static + Send>(
     let mutex = engine.clone();
     let engine = mutex.lock().await;
 
-    engine.end(game_state);
+    engine.end(&game_state);
 }

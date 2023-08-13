@@ -6,8 +6,8 @@ use rand::{self, Rng};
 pub struct Dumb;
 
 impl SnakeEngine for Dumb {
-    fn start(&self, _: GameState) {}
-    fn next(&self, _: GameState) -> Action {
+    fn start(&self, _: &GameState) {}
+    fn next(&self, _: &GameState) -> Action {
         match rand::thread_rng().gen_range(0..=3) {
             0 => Action::Up,
             1 => Action::Down,
@@ -16,7 +16,7 @@ impl SnakeEngine for Dumb {
             _ => unreachable!(),
         }
     }
-    fn end(&self, _: GameState) {}
+    fn end(&self, _: &GameState) {}
 }
 
 impl Dumb {

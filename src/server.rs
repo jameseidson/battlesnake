@@ -1,10 +1,11 @@
-use crate::{engine::SnakeEngine, GameState};
+use crate::common::{GameState, SnakeInfo};
+use crate::BattleSnake;
 use axum::{extract::State, response, routing, Json, Router, Server};
 use serde_json::{json, Value};
 use std::{net::SocketAddr, sync::Arc};
 use tokio::sync::Mutex;
 
-pub async fn serve<E: SnakeEngine + 'static + Send>(addr: &SocketAddr, engine: E) {
+pub async fn serve<E: BattleSnake + Send + 'static>(addr: &SocketAddr, engine: E) {
     let app = Router::new()
         .route("/", routing::get(handle_root))
         .route("/start", routing::post(handle_start))
@@ -18,13 +19,16 @@ pub async fn serve<E: SnakeEngine + 'static + Send>(addr: &SocketAddr, engine: E
         .unwrap();
 }
 
-async fn handle_root() -> Json<Value> {
-    response::Json(
-        json!({ "apiversion": "1", "author" : "jameseidson", "version" : env!("CARGO_PKG_VERSION") }),
-    )
+async fn handle_root<E: BattleSnake + Send + 'static>(
+    State(engine): State<Arc<Mutex<E>>>,
+) -> Json<SnakeInfo> {
+    let mutex = engine.clone();
+    let engine = mutex.lock().await;
+
+    Json(engine.info())
 }
 
-async fn handle_start<E: SnakeEngine + 'static + Send>(
+async fn handle_start<E: BattleSnake + Send + 'static>(
     State(engine): State<Arc<Mutex<E>>>,
     Json(game_state): Json<GameState>,
 ) {
@@ -34,7 +38,7 @@ async fn handle_start<E: SnakeEngine + 'static + Send>(
     engine.start(&game_state);
 }
 
-async fn handle_move<E: SnakeEngine + 'static + Send>(
+async fn handle_move<E: BattleSnake + Send + 'static>(
     State(engine): State<Arc<Mutex<E>>>,
     Json(game_state): Json<GameState>,
 ) -> response::Json<Value> {
@@ -46,7 +50,7 @@ async fn handle_move<E: SnakeEngine + 'static + Send>(
     Json(json!({ "move": action }))
 }
 
-async fn handle_end<E: SnakeEngine + 'static + Send>(
+async fn handle_end<E: BattleSnake + Send + 'static>(
     State(engine): State<Arc<Mutex<E>>>,
     Json(game_state): Json<GameState>,
 ) {

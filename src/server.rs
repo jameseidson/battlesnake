@@ -1,5 +1,5 @@
 use crate::common::{GameState, SnakeInfo};
-use crate::BattleSnake;
+use crate::snakes::BattleSnake;
 use axum::{extract::State, response, routing, Json, Router, Server};
 use serde_json::{json, Value};
 use std::{net::SocketAddr, sync::Arc};

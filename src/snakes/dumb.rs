@@ -1,5 +1,8 @@
-use crate::common::{Action, GameState, SnakeInfo};
-use crate::engine::{Engine, Informative};
+use crate::{
+    common::{Action, GameState, SnakeInfo},
+    engine::Engine,
+    snakes::Informative,
+};
 use rand::{self, Rng};
 
 #[derive(Clone)]

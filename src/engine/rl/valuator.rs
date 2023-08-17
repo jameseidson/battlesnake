@@ -5,5 +5,5 @@ pub trait Valuator<R>
 where
     R: RewardSignal,
 {
-    fn action_value(&self, state: &GameState, action: Action) -> f32;
+    fn value(&self, state: &GameState, action: Action) -> f32;
 }
